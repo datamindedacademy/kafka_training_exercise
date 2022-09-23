@@ -1,0 +1,1 @@
+# kafka_training_exercise
