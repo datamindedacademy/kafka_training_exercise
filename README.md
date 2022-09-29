@@ -48,10 +48,10 @@ docker-compose up
 4) Create a Kafka Streams application that reads data from the ``text_lines`` topic. This topic contains full sentences (1 event = 1 sentence). The goal of the Kafka Streams application is to split the sentence into words and count the occurrence of every word across sentences and thus Kafka events. On the output topic ``words_with_count`` we expect the word as key and a long with the count of that word as value. Tip: take a look at the flatMap function to convert one event into multiple events. 
 5) Test your Kafka streams application manually by producing events with the console producer and reading events with the console consumer.
     ```
-   kafka-console-producer --topic text_lines --bootstrap-server localhost:9092
+   kafka-console-producer.sh --topic text_lines --bootstrap-server localhost:9092
     ```
    ```
-    kafka-console-consumer --topic words_with_count --from-beginning --bootstrap-server localhost:9092 --property "print.key=true" --property "key.separator=:" --value-deserializer "org.apache.kafka.common.serialization.LongDeserializer"
+    kafka-console-consumer.sh --topic words_with_count --from-beginning --bootstrap-server localhost:9092 --property "print.key=true" --property "key.separator=:" --value-deserializer "org.apache.kafka.common.serialization.LongDeserializer"
     ```
 
 ### Kafka Streams - Sensor Events aggregate
