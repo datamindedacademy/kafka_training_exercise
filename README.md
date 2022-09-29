@@ -18,7 +18,7 @@ docker-compose up
 1) Use the Kafka CLI (available in the path (eg: kafka-topics.sh --list --bootstrap-server localhost:9092):
 2) Create new topic called 'my-events' with 3 partitions
 3) Produce some messages using the 'kafka-console-producer'
-4) Consume the messages using the 'kafka-console-producer'
+4) Consume the messages using the 'kafka-console-consumer'
 
 ### Console Producer & Consumer
 
