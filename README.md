@@ -17,15 +17,36 @@ docker-compose up
 ### first steps
 1) Use the Kafka CLI (available in the path (eg: kafka-topics.sh --list --bootstrap-server localhost:9092):
 2) Create new topic called 'my-events' with 3 partitions
+    ```
+    kafka-topics.sh --create --topic my-events --bootstrap-server localhost:9092 --partitions 3
+    ```
 3) Produce some messages using the 'kafka-console-producer'
+    ```
+    kafka-console-producer.sh --topic my-events --bootstrap-server localhost:9092
+    ```
 4) Consume the messages using the 'kafka-console-consumer'
+    ```
+    kafka-console-consumer.sh --topic my-events --from-beginning --bootstrap-server localhost:9092
+    ```
 
 ### Console Producer & Consumer
 
 1) Produce records with full key-value pairs. Kafka works with key-value pairs, but so far you’ve only sent records with values only. Well to be fair you’ve sent key-value pairs, but the keys are null. Sometimes you’ll need to send a valid key in addition to the value from the command line. To enable sending full key-value pairs from the command line you add two properties to your console producer, ```parse.key``` and ```key.separator```
+   ```
+   kafka-console-producer.sh --topic my-events --bootstrap-server localhost:9092 --property "parse.key=true" --property "key.separator=:"
+   ```
 2) Start a consumer to show full key-value pairs. Now that we’ve produced full key-value pairs from the command line, you’ll want to consume full key-value pairs from the command line as well. Add the properties ```print.key``` and ```key.separator```
-3) Start a new consumer. This time provide a ```group.id``` property. Start multiple consumers with the same group id. This should trigger a rebalance. There are now 2 consumers in the same group. One consumer will get 1 partition assigned, the other one will get 2 partitions. Try to see this effect in action by producing and consuming. 
+   ```
+   kafka-console-consumer.sh --topic my-events --from-beginning --bootstrap-server localhost:9092 --property "print.key=true" --property "key.separator=||"
+   ```
+3) Start a new consumer. This time provide a ```group.id``` property. Start multiple consumers with the same group id. This should trigger a rebalance. There are now 2 consumers in the same group. One consumer will get 1 partition assigned, the other one will get 2 partitions. Try to see this effect in action by producing and consuming.
+   ```
+   kafka-console-consumer.sh --topic my-events --from-beginning --bootstrap-server localhost:9092 --property "print.key=true" --property "key.separator=||" --group my-consumer-group
+   ```
 4) Start a new consumer. change the ```group.id``` property again. What happens now? Why? 
+   ```
+   When we start a new consumer with a new group id, we can consider this a new application, with a different purpose. This consumer works completely independently from the other consumer that read from the same topic. They have no impact on each other and each consumer keeps track of their own progress in the topic. When we start this new consumer and configure it to read from the beginning, it will receive all the messages on the topic.    
+   ```
 
 ### Java Producer
 
