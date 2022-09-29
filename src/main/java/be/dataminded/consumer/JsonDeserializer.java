@@ -1,6 +1,7 @@
 package be.dataminded.consumer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.apache.kafka.common.errors.SerializationException;
 import org.apache.kafka.common.header.Headers;
 import org.apache.kafka.common.serialization.Deserializer;
@@ -10,11 +11,13 @@ import java.util.Map;
 
 public class JsonDeserializer<T> implements Deserializer<T> {
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper;
     private Class<T> cls;
 
     public JsonDeserializer(Class<T> cls) {
         this.cls = cls;
+        objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
     }
 
     @Override
