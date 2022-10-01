@@ -60,4 +60,25 @@ docker-compose up
 1) Take a look at [this](https://developer.confluent.io/learn-kafka/apache-kafka/consumers/) page for a Java Kafka Consumer example.
 2) Write a Java consumer  that uses a string deserializer for the key and a json deserializer for the value. Read data from the topic that you created in the producer exercise. 
 3) Start a second instance of your Java consumer with the same ```group.id``` This should trigger a rebalance. There are now 2 consumers in the same group. One consumer will get 1 partition assigned, the other one will get 2 partitions. Produce some more records to this topic and see what happens. 
-4) Disable auto committing by setting the ```enable.auto.commit``` to ```false```. What happens when you don't commit your offsets manually, and you start your consumer group? Try committing your offsets manually both synchronously as asynchronously. 
+4) Disable auto committing by setting the ```enable.auto.commit``` to ```false```. What happens when you don't commit your offsets manually, and you start your consumer group? Try committing your offsets manually both synchronously as asynchronously.
+
+### Kafka Streams - Word Count
+1) Take a look at [this](https://developer.confluent.io/learn-kafka/kafka-streams/get-started/) page for a Kafka Streams example.
+2) Take a look at the pom.xml file and see what dependencies have been added for Kafka Streams.
+3) Create 2 new topics ``text_lines`` and ``words_with_count`` with the CLI.
+4) Create a Kafka Streams application that reads data from the ``text_lines`` topic. This topic contains full sentences (1 event = 1 sentence). The goal of the Kafka Streams application is to split the sentence into words and count the occurrence of every word across sentences and thus Kafka events. On the output topic ``words_with_count`` we expect the word as key and a long with the count of that word as value. Tip: take a look at the flatMap function to convert one event into multiple events. 
+5) Test your Kafka streams application manually by producing events with the console producer and reading events with the console consumer.
+    ```
+   kafka-console-producer.sh --topic text_lines --bootstrap-server localhost:9092
+    ```
+   ```
+    kafka-console-consumer.sh --topic words_with_count --from-beginning --bootstrap-server localhost:9092 --property "print.key=true" --property "key.separator=:" --value-deserializer "org.apache.kafka.common.serialization.LongDeserializer"
+    ```
+
+### Kafka Streams - Sensor Events aggregate
+1) Create a new topic called ``sensor_events_aggregate``. This topic will be used to create aggregations of multiple sensor events. A model class ``AggregateSensorEvent`` has been created with the desired output format. We want to make aggregations based on the unit. For each ``unit`` (co, co2, h2o, ...) we want to know the total ``count`` of events, the ``sum`` of the measurement value, the ``average`` of the measurement values and the ``maxTimestamp`` we encountered to know what our most recent measurement time was.
+2) Create a Kafka Streams application that reads the ``sensor_events`` topic. 
+3) Filter out all the measurements with a value below 100
+4) Make sure that all the units of a measurement are in upper case. If this is not the case, transform them to uppercase values
+5) Write the logic to create the aggregations described in step 1. Tip: use the aggregate function for this. Write the output as a stream to the ``sensor_events_aggregate`` topic.
+6) Unit test your Kafka Streams application logic. Take a look [here](https://kafka.apache.org/documentation/streams/developer-guide/testing.html) for an example. 
