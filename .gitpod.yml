@@ -13,7 +13,7 @@ tasks:
   - name: setup
     init: |
       mkdir kafka_cli
-      wget https://downloads.apache.org/kafka/3.1.2/kafka_2.13-3.1.2.tgz -P kafka_cli
+      wget https://archive.apache.org/dist/kafka/3.1.2/kafka_2.13-3.1.2.tgz -P kafka_cli
       tar -xzf kafka_cli/kafka_2.13-3.1.2.tgz --directory kafka_cli
       echo 'export PATH="/workspace/kafka_cli/kafka_2.13-3.1.2/bin:$PATH"' >> ~/.bashrc
 github:
