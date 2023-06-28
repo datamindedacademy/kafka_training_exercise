@@ -49,3 +49,10 @@ services:
       - "8080:8080"
     depends_on:
       - broker
+  kafka-cli:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: kafka-cli
+    depends_on:
+      - broker
