@@ -12,10 +12,15 @@ Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https:/
 docker-compose up
 ```
 
+#### Connect to the local kafka-cli container that started with docker compose `docker exec -it kafka-cli bash` Inside the container, you can connect to Kafka, using a different host
+```bash
+kafka-topics.sh --list --bootstrap-server broker:29092
+```
+
 ## Exercises
 
 ### first steps
-1) Use the Kafka CLI (available in the path (eg: kafka-topics.sh --list --bootstrap-server localhost:9092):
+1) Use the Kafka CLI (available in the path (eg: `kafka-topics.sh --list --bootstrap-server localhost:9092`):
 2) Create new topic called 'my-events' with 3 partitions
 3) Produce some messages using the 'kafka-console-producer'
 4) Consume the messages using the 'kafka-console-consumer'
